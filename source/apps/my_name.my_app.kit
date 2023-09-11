@@ -1,5 +1,5 @@
 [package]
-title = "My Simple Application"
+title = "Jiucao Viewport"
 
 version = "1.0.0"
 
@@ -9,13 +9,24 @@ description = """This Simple application shows you how to make an application"""
 keywords = ["app"]
 
 [dependencies]
-# Create Kit UI Based applications
-"omni.app.editor.base" = {}
 
-"omni.hello.world" = {}
+# One and only, the base for all the editor-like apps!
+
+# CuijuStudio dev plugin
+"jiucao.Viewport.ui" = {}
 
 # Vulkan shader caches
 "omni.rtx.shadercache.vulkan" = {}
+# Extensions window
+"omni.kit.window.extensions" = {}
+"omni.app.setup" = {}
+
+# Viewport Bundle
+"omni.kit.viewport.bundle" = {}
+# Enable Pixar Storm for your viewport
+"omni.hydra.pxr" = {}
+
+
 
 # DX shader caches (windows only)
 [dependencies."filter:platform"."windows-x86_64"]
@@ -24,6 +35,29 @@ keywords = ["app"]
 [settings.app]
 fastShutdown = true
 
+# Eco Mode
+rtx.ecoMode.enabled = true
+
+app.renderer.skipWhileMinimized = true
+
+# Setting the port for the embedded http server
+exts."omni.services.transport.server.http".port = 8111
+
+# Sentry (internal only, does not work outside VPN)
+telemetry.enableSentry = true
+
+# Enable GPU foundation startup on its own thread
+"filter:platform"."windows-x86_64".exts."omni.kit.renderer.core".parallelStartup.enabled = true
+#empty stage on start
+content.emptyStageOnStart = true
+
+exts."omni.kit.viewport.window".startup.windowName = "Viewport"
+exts."omni.kit.renderer.core".compatibilityMode = false
+# here you can choose what renderers are enabled
+renderer.enabled = "rtx"
+renderer.active = "rtx"
+exts."omni.kit.renderer.core".imgui.enableMips = true
+
 # Register extension folders from this repo in kit
 # These are the paths where Kit looks for extensions
 # Your application is using Extensions from your application
@@ -31,6 +65,13 @@ fastShutdown = true
 # see we also add the Extension from the Base application using their extscache
 [settings.app.exts]
 folders.'++' = ["${app}/../extensions"]
+
+[settings.app.window]
+title = "Jiucao Viewport"
+width = 1920
+height = 1080
+x = -1
+y = -1
 
 # Public extension registries
 [settings.exts."omni.kit.registry.nucleus"]
@@ -49,7 +90,7 @@ registries = [
 # Version lock for all dependencies:
 [settings.app.exts]
 enabled = [
-	"omni.hello.world-1.0.0",
+    "jiucao.Viewport.ui-1.0.0",
 ]
 
 ########################################################################################################################
